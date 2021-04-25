@@ -7,7 +7,7 @@ plugins {
 sourceCompatibility = 1.10
 targetCompatibility = 1.10
 
-project.ext.lwjglVersion = "3.2.1"
+project.ext.lwjglVersion = "3.2.3"
 
 switch (org.gradle.internal.os.OperatingSystem.current()) {
   case org.gradle.internal.os.OperatingSystem.WINDOWS:
@@ -22,7 +22,7 @@ switch (org.gradle.internal.os.OperatingSystem.current()) {
 }
 
 repositories {
-  maven { url "http://repo.maven.apache.org/maven2" }
+  maven { url "https://repo.maven.apache.org/maven2" }
   maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
   jcenter()
 }
@@ -30,7 +30,7 @@ repositories {
 dependencies {
   implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 
-  implementation group: 'org.joml',  name: 'joml-camera', version:'1.2.0-SNAPSHOT'
+  implementation group: 'org.joml',  name: 'joml', version:'1.9.24'
   implementation group: 'org.lwjgl', name: 'lwjgl', version: "$lwjglVersion"
   implementation group: 'org.lwjgl', name: 'lwjgl', version: "$lwjglVersion", classifier: "$lwjglNatives"
   implementation group: 'org.lwjgl', name: 'lwjgl-glfw', version: "$lwjglVersion"
@@ -39,6 +39,8 @@ dependencies {
   implementation group: 'org.lwjgl', name: 'lwjgl-opengl', version: "$lwjglVersion", classifier: "$lwjglNatives"
   implementation group: 'org.lwjgl', name: 'lwjgl-stb', version: "$lwjglVersion"
   implementation group: 'org.lwjgl', name: 'lwjgl-stb', version: "$lwjglVersion", classifier: "$lwjglNatives"
+  implementation group: 'org.lwjgl', name: 'lwjgl-openal', version: "$lwjglVersion"
+  implementation group: 'org.lwjgl', name: 'lwjgl-openal', version: "$lwjglVersion", classifier: "$lwjglNatives"
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }

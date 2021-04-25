@@ -12,6 +12,8 @@ import org.lwjgl.system.MemoryUtil.NULL
 
 object Game {
   private var window: Long = 0
+  private val startTime: Long = System.currentTimeMillis()
+  private val windowSize: Array<Float> = Array(2) { 100.0f }
 
   fun run() {
     try {
@@ -38,9 +40,10 @@ object Game {
     glfwDefaultWindowHints() // optional, the current window hints are already the default
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE) // the window will stay hidden after creation
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE) // the window will be resizable
+    // glfwWindowHint(GLFW_DECORATED, GLFW_FALSE)
 
     // Create the window
-    window = glfwCreateWindow(800, 800, "Game", NULL, NULL)
+    window = glfwCreateWindow(1200, 800, "Game", NULL, NULL)
     if (window == NULL) {
       throw RuntimeException("Failed to create the GLFW window")
     }
@@ -49,6 +52,9 @@ object Game {
     glfwSetKeyCallback(window) { window, key, scancode, action, mods ->
       if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
         glfwSetWindowShouldClose(window, true) // We will detect this in the rendering loop
+      }
+      if (key == GLFW_KEY_A && action == GLFW_RELEASE) {
+        Sound.test()
       }
     }
 
@@ -66,11 +72,15 @@ object Game {
       // Get the window size passed to glfwCreateWindow
       glfwGetWindowSize(window, pWidth, pHeight)
 
+      windowSize[0] = pWidth.get().toFloat()
+      windowSize[1] = pHeight.get().toFloat()
+
       // Get the resolution of the primary monitor
       val vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor())!!
 
       // Center the window
       glfwSetWindowPos(window, (vidmode.width() - pWidth.get(0)) / 2, (vidmode.height() - pHeight.get(0)) / 2)
+      // glfwSetWindowSize(window, vidmode.width(), vidmode.height())
     }
 
     glfwMakeContextCurrent(window)
@@ -87,7 +97,7 @@ object Game {
     // bindings available for use.
     GL.createCapabilities()
 
-    val shaderId = loadShader("test.frag", GL_FRAGMENT_SHADER)
+    val shaderId = loadShader("circle.frag", GL_FRAGMENT_SHADER)
     val programId = glCreateProgram()
 
     glAttachShader(programId, shaderId)
@@ -103,6 +113,8 @@ object Game {
       glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT) // clear the framebuffer
 
       glUseProgram(programId)
+      glUniform2f(glGetUniformLocation(programId, "u_resolution"), windowSize[0], windowSize[1])
+      glUniform1f(glGetUniformLocation(programId, "u_time"), (System.currentTimeMillis() - startTime) / 1000.0f)
 
       glBegin(GL_QUADS)
       glVertex2f(-1f, -1f)
@@ -113,7 +125,7 @@ object Game {
 
       glUseProgram(0)
 
-      HexGrid.draw()
+      // HexGrid.draw()
 
       glfwSwapBuffers(window)
     }
@@ -124,7 +136,9 @@ object Game {
     glShaderSource(shaderHandle, Utils.readShader(location))
     glCompileShader(shaderHandle)
 
-    require(glGetShaderi(shaderHandle, GL_COMPILE_STATUS) != GL_FALSE) { GL20.glGetShaderInfoLog(shaderHandle) }
+    if (glGetShaderi(shaderHandle, GL_COMPILE_STATUS) == GL_FALSE) {
+      throw IllegalArgumentException(GL20.glGetShaderInfoLog(shaderHandle))
+    }
 
     return shaderHandle
   }

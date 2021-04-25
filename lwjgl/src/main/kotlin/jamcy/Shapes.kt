@@ -5,8 +5,8 @@ import org.lwjgl.opengl.GL20.*
 import kotlin.math.*
 
 object HexGrid {
-  private const val precision = 1000
-  private const val radius = 100
+  private val precision = 1000
+  private val radius = 100
 
   fun draw() {
     glBegin(GL_LINES)
@@ -24,7 +24,7 @@ object HexGrid {
       GL11.glVertex2f(vx, vy)
       GL11.glVertex2f(linkedVert.x.toFloat() / precision, linkedVert.y.toFloat() / precision)
       if (depth > 0 && !vertices.contains(linkedVert) && abs(linkedVert.x) < precision && abs(linkedVert.x) < precision) {
-        drawVertex(linkedVert, (phase + i * 2) % 6, vertices, depth - 1)
+        drawVertex(linkedVert, (phase + i) % 6, vertices, depth - 1)
       }
     }
   }
