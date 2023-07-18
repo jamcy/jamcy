@@ -1,0 +1,4 @@
+package jamcy
+
+object Shaders {
+}
