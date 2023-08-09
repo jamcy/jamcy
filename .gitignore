@@ -1,4 +1,12 @@
+# Generic
 data/
 dist/
 out/
 build/
+
+# Yarn
+.yarn/cache
+.yarn/local
+.yarn/unplugged
+.yarn/install-state.gz
+.pnp.*

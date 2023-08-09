@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "workspaces": [
+    "sites/gh"
+  ],
+  "packageManager": "yarn@3.6.1"
+}
