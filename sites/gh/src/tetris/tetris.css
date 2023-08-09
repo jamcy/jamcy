@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #242424;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#tetris {
+  display: flex;
+  margin: auto;
+}
+
+#score {
+  display: flex;
+  margin: auto;
+  color: green;
+  font-size: x-large;
+}

@@ -515,6 +515,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jamcy/gh@workspace:sites/gh"
   dependencies:
+    "@jamcy/tetris": "workspace:^"
     "@types/react": ^18.2.15
     "@types/react-dom": ^18.2.7
     "@typescript-eslint/eslint-plugin": ^6.0.0
@@ -527,6 +528,12 @@ __metadata:
     react-dom: ^18.2.0
     typescript: ^5.0.2
     vite: ^4.4.5
+  languageName: unknown
+  linkType: soft
+
+"@jamcy/tetris@workspace:^, @jamcy/tetris@workspace:pkg/tetris":
+  version: 0.0.0-use.local
+  resolution: "@jamcy/tetris@workspace:pkg/tetris"
   languageName: unknown
   linkType: soft
 

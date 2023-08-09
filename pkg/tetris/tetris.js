@@ -1,11 +1,10 @@
 var GAME = {};
 
 GAME.start = function() {
-	var canvas = document.getElementById("myCanvas");
+	var canvas = document.getElementById("tetris");
 	GAME.size = {"x" : canvas.width, "y" : canvas.height};
 	GAME.ctx = canvas.getContext("2d");
 	document.onkeydown = GAME.keyDown;
-	GAME.meter = new FPSMeter(document.getElementById('fps'));
 	GAME.lastTick = performance.now();
 	GAME.lastRender = GAME.lastTick;
 	GAME.tickLength = 50;
@@ -18,7 +17,7 @@ GAME.start = function() {
 GAME.keyDown = function(e) {
 	if(e.keyCode==37)
 		GAME.board.move(1);
-	if(e.keyCode==38)
+	if(e.keyCode==38 || e.keyCode === 32)
 		GAME.board.rotate();
 	if(e.keyCode==39)
 		GAME.board.move(2);
@@ -27,7 +26,6 @@ GAME.keyDown = function(e) {
 }
 
 GAME.frame= function(tFrame) {
-	GAME.meter.tickStart();
 	if(!GAME.end)
 		requestAnimationFrame(GAME.frame);
 	var nextTick = GAME.lastTick + GAME.tickLength;
@@ -41,7 +39,6 @@ GAME.frame= function(tFrame) {
 	GAME.queueUpdates( numTicks );
 	GAME.render( tFrame );
 	GAME.lastRender = tFrame;
-	GAME.meter.tick();
 }
 
 GAME.render = function(tFrame) {
@@ -63,11 +60,11 @@ GAME.update = function(lastTick) {
 
 function Board() {
 	this.random = new Random();
-	MV_DOWN = 0;
-	MV_LEFT = 1;
-	MV_RIGHT = 2;
-	MINIMAL_SPEED = 13;
-	MAXIMAL_SPEED = 4;
+	const MV_DOWN = 0;
+	const MV_LEFT = 1;
+	const MV_RIGHT = 2;
+	const MINIMAL_SPEED = 13;
+	const MAXIMAL_SPEED = 4;
 	this.size = {"x" : 10, "y" : 20};
 	this.cells = [];
 	this.figure = [];
@@ -171,7 +168,7 @@ function Board() {
 		this.speed = MINIMAL_SPEED-Math.floor(this.score/100);
 		if(this.speed<MAXIMAL_SPEED)
 			this.speed = MAXIMAL_SPEED;
-		$("#score").text('Level: '+(MINIMAL_SPEED-this.speed+1)+'\tPts: '+this.score);
+		document.getElementById('score').textContent = 'Level: '+(MINIMAL_SPEED-this.speed+1)+'\tPts: '+this.score;
 	}
 
 	this.checkLines = function() {
@@ -266,3 +263,5 @@ function Random(seed) {
 		return result;
 	}
 }
+
+export default GAME
