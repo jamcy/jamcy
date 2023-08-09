@@ -1,6 +1,7 @@
 {
   "name": "@jamcy/gh",
   "private": true,
+  "homepage": "https://jamcy.github.io/jamcy",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
