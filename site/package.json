@@ -1,5 +1,5 @@
 {
-  "name": "@jamcy/gh",
+  "name": "@jamcy/site",
   "private": true,
   "homepage": "https://jamcy.github.io/jamcy",
   "version": "0.0.0",
@@ -11,7 +11,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jamcy/tetris": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

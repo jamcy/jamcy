@@ -1,0 +1,11 @@
+#tetris {
+  display: flex;
+  margin: auto;
+}
+
+#score {
+  display: flex;
+  margin: auto;
+  color: green;
+  font-size: x-large;
+}

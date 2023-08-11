@@ -1,8 +1,7 @@
 {
   "private": true,
   "workspaces": [
-    "sites/gh",
-    "pkg/tetris"
+    "site"
   ],
   "packageManager": "yarn@3.6.1"
 }

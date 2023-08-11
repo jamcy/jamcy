@@ -1,0 +1,6 @@
+{
+  "exclude": ["packages/**/dist/**"],
+    "references": [
+      { "path": "./site" },
+  ],
+}
