@@ -39,7 +39,7 @@ jobs:
       - name: Install Deps
         run: yarn install
       - name: Build
-        run: yarn workspace @jamcy/gh build
+        run: yarn workspace @jamcy/site build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
