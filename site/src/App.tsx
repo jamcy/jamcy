@@ -1,6 +1,6 @@
 import './App.css'
-import Tetris from './tetris/Tetris'
+import Einstein from './einstein/Einstein'
 
 export default function App() {
-  return <Tetris />
+  return <Einstein />
 }
