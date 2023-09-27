@@ -1,7 +1,8 @@
 import './tetris.css'
 import { simpleSeeded } from '../util/random'
 
-var GAME: any = {}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const GAME: any= {}
 
 GAME.start = function() {
   const canvas = document.getElementById('tetris') as HTMLCanvasElement
@@ -47,11 +48,11 @@ GAME.keyDown = function(e: KeyboardEvent) {
 GAME.frame = function(tFrame: number) {
   if(!GAME.end)
     requestAnimationFrame(GAME.frame)
-  var nextTick = GAME.lastTick + GAME.tickLength
-  var numTicks = 0
+  const nextTick = GAME.lastTick + GAME.tickLength
+  let numTicks = 0
 
   if (tFrame > nextTick) {
-    var timeSinceTick = tFrame - GAME.lastTick
+    const timeSinceTick = tFrame - GAME.lastTick
     numTicks = Math.floor( timeSinceTick / GAME.tickLength )
   }
 
@@ -67,7 +68,7 @@ GAME.render = function() {
 }
 
 GAME.queueUpdates = function(numTicks: number) {
-  for(var i=0; i < numTicks; i++) {
+  for(let i=0; i < numTicks; i++) {
     GAME.lastTick = GAME.lastTick + GAME.tickLength; //Now lastTick is this tick.
     GAME.update(GAME.lastTick)
   }
@@ -104,33 +105,33 @@ class Board {
   }
 
   public newFigure() {
-    var k = this.random() % 7
+    const k = this.random() % 7
     this.figure = []
-    var pos = []
-    for(var i = 0; i<2; i++)
-      for(var j=0; j<4; j++)
+    const pos = []
+    for(let i = 0; i<2; i++)
+      for(let j=0; j<4; j++)
         if(FIGURES[k][i*4+j]==1)
           pos.push({"x": 3+j, "y": i})
     if(!this.validPos(pos))
       GAME.end = true
-    //var color = '#' + (function co(lor){   return (lor +=
+    //const color = '#' + (function co(lor){   return (lor +=
     //           [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)])
     //           && (lor.length == 6) ?  lor : co(lor); })('')
-    var color = COLORS[k]
-    for(let p of pos)
+    const color = COLORS[k]
+    for(const p of pos)
       this.figure.push(new Cell(p.x, p.y, color))
   }
 
   public move(direction: number) {
-    var shift = {
+    const shift = {
       x: (direction === this.MV_DOWN)?0:((direction === this.MV_LEFT)?-1:1),
       y: (direction === this.MV_DOWN)?1:0
     }
-    var newPos: { x: number, y: number }[] = []
-    for(var i in this.figure)
+    const newPos: { x: number, y: number }[] = []
+    for(const i in this.figure)
       newPos[i] = { x: this.figure[i].pos.x+shift.x, y: this.figure[i].pos.y+shift.y }
     if(this.validPos(newPos)) {
-      for(var i in this.figure)
+      for(const i in this.figure)
         this.figure[i].pos=newPos[i]
     } else if(direction==this.MV_DOWN) {
       this.setFigure()
@@ -138,7 +139,7 @@ class Board {
   }
 
   public validPos(pos: {x: number, y: number}[]) {
-    for(var i in pos) {
+    for(const i in pos) {
       if(pos[i].x<0 || pos[i].y<0 || pos[i].x>=this.size.x || pos[i].y>=this.size.y)
         return false
       if(this.cells[pos[i].y*this.size.x + pos[i].x]!==undefined)
@@ -148,9 +149,9 @@ class Board {
   }
 
   public rotate() {
-    var box = {"min": {"x": this.size.x, "y": this.size.y}, "max": {"x": 0, "y": 0}}
-    for(var i in this.figure) {
-      var pos = this.figure[i].pos
+    const box = {"min": {"x": this.size.x, "y": this.size.y}, "max": {"x": 0, "y": 0}}
+    for(const i in this.figure) {
+      const pos = this.figure[i].pos
       if(pos.x<box.min.x)
         box.min.x = pos.x
       if(pos.x>box.max.x)
@@ -160,26 +161,29 @@ class Board {
       if(pos.y>box.max.y)
         box.max.y = pos.y
     }
-    var newPos: {x: number, y: number}[] = []
-    var dx = box.max.x - box.min.x
-    var dy = box.max.y - box.min.y
-    var corner = {"x": box.min.x + Math.sign(dx-dy)*Math.floor(Math.abs((dx-dy)/2)),"y": box.min.y + Math.sign(dy-dx)*Math.floor(Math.abs((dy-dx)/2))}
-    for(var i in this.figure) {
-      var pos = this.figure[i].pos
+    const newPos: {x: number, y: number}[] = []
+    const dx = box.max.x - box.min.x
+    const dy = box.max.y - box.min.y
+    const corner = {
+      "x": box.min.x + Math.sign(dx-dy)*Math.floor(Math.abs((dx-dy)/2)),
+      "y": box.min.y + Math.sign(dy-dx)*Math.floor(Math.abs((dy-dx)/2))
+    }
+    for(const i in this.figure) {
+      const pos = this.figure[i].pos
       newPos[i] = {"x": corner.x + box.max.y - pos.y, "y": corner.y + pos.x - box.min.x}
     }
     if(this.validPos(newPos)) {
-      for(var i in this.figure)
+      for(const i in this.figure)
         this.figure[i].pos=newPos[i]
     }
   }
 
   public setFigure() {
-    for(var i in this.figure) {
-      var cell = this.figure[i]
+    for(const i in this.figure) {
+      const cell = this.figure[i]
       this.cells[cell.pos.y*this.size.x + cell.pos.x] = new Cell(cell.pos.x, cell.pos.y, cell.color)
     }
-    var lines = this.checkLines()
+    const lines = this.checkLines()
     this.updateScore(lines*10)
   }
 
@@ -192,12 +196,13 @@ class Board {
   }
 
   public checkLines() {
-    var linesCount = 0
+    let linesCount = 0
+    // eslint-disable-next-line no-constant-condition
     while(true) {
-      var line = -1
-      for(var i = 0; i<this.size.y; i++) {
+      let line = -1
+      for(let i = 0; i<this.size.y; i++) {
         line=i
-        for(var j = 0; j<this.size.x; j++)
+        for(let j = 0; j<this.size.x; j++)
           if(this.cells[i*this.size.x+j]===undefined)
             line = -1
         if(line==i)
@@ -206,13 +211,13 @@ class Board {
       if(line==-1)
         break
       linesCount++
-      for(var i=line; i>0; i--)
-        for(var j=0; j<this.size.x; j++) {
+      for(let i=line; i>0; i--)
+        for(let j=0; j<this.size.x; j++) {
           this.cells[i*this.size.x+j] = this.cells[(i-1)*this.size.x+j]
           if(this.cells[i*this.size.x+j]!==undefined)
             this.cells[i*this.size.x+j]!.pos.y += 1
         }
-      for(var j=0; j<this.size.x; j++)
+      for(let j=0; j<this.size.x; j++)
         this.cells[j]=undefined
     }
     this.newFigure()
@@ -220,9 +225,9 @@ class Board {
   }
 
   public render(ctx: CanvasRenderingContext2D, scrSize: {x: number, y: number}) {
-    var sizeX = scrSize.x/this.size.x
-    var sizeY = scrSize.y/(this.size.y)
-    var renderCell = function(cell?: Cell) {
+    const sizeX = scrSize.x/this.size.x
+    const sizeY = scrSize.y/(this.size.y)
+    const renderCell = function(cell?: Cell) {
       if(cell!==undefined) {
         ctx.fillStyle = cell.color
         ctx.fillRect(cell.pos.x*sizeX+1, cell.pos.y*sizeY+1 ,sizeX-2, sizeY-2)
@@ -231,22 +236,22 @@ class Board {
 
     ctx.strokeStyle = "#010101"
     ctx.lineWidth = 0.2
-    for(var i=1; i<this.size.x; i++) {
+    for(let i=1; i<this.size.x; i++) {
       ctx.beginPath()
       ctx.moveTo(i*sizeX-1, 0)
       ctx.lineTo(i*sizeX-1, scrSize.y)
       ctx.stroke()
     }
-    for(var i=1; i<this.size.y; i++) {
+    for(let i=1; i<this.size.y; i++) {
       ctx.beginPath()
       ctx.moveTo(0, i*sizeY-1)
       ctx.lineTo(scrSize.y, i*sizeY-1)
       ctx.stroke()
     }
 
-    for (let i in this.cells)
+    for (const i in this.cells)
       renderCell(this.cells[i]!)
-    for (let i in this.figure)
+    for (const i in this.figure)
       renderCell(this.figure[i])
   }
 }
