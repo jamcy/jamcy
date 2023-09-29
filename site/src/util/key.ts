@@ -5,7 +5,7 @@ export function keyboard(value) {
   key.isUp = true
   key.press = undefined
   key.release = undefined
-  //The `downHandler`
+
   key.downHandler = event => {
     if (event.key === key.value) {
       if (key.isUp && key.press) key.press()
@@ -15,7 +15,6 @@ export function keyboard(value) {
     }
   }
 
-  //The `upHandler`
   key.upHandler = event => {
     if (event.key === key.value) {
       if (key.isDown && key.release) key.release()
@@ -35,7 +34,7 @@ export function keyboard(value) {
   window.addEventListener(
     "keyup", upListener, false
   )
-  
+
   // Detach event listeners
   key.unsubscribe = () => {
     window.removeEventListener("keydown", downListener)

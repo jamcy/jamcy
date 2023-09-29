@@ -1,12 +1,20 @@
 import * as PIXI from 'pixi.js'
-import {keyboard} from './keyboard'
+// import {keyboard} from '../util/key'
 
-export const APP = new PIXI.Application({antialias: true, width: window.innerWidth, height: window.innerHeight})
+// window.addEventListener('resize', () => resize(window.innerWidth, window.innerHeight))
+// document.getElementById('root').append(APP.view)
+// init()
+
+export const APP = new PIXI.Application({
+  antialias: true,
+  width: window.innerWidth,
+  height: window.innerHeight
+})
 
 export const STATE = {
-  keys: {
-    space: keyboard(" "),
-  },
+  // keys: {
+  //   space: keyboard(" "),
+  // },
   uniforms: {
     time: 0.0,
     resolution: [APP.renderer.width, APP.renderer.height],
@@ -17,7 +25,7 @@ export const STATE = {
   },
 }
 
-function gameLoop(delta) {
+function gameLoop(delta: number) {
   STATE.uniforms.time = performance.now() / 1000
   // const mousePosition = APP.renderer.plugins.interaction.mouse.getLocalPosition()
   // STATE.uniforms.mouse = [mousePosition.x, mousePosition.y]
@@ -28,7 +36,7 @@ export function resize(w, h) {
 }
 
 export function init() {
-  PIXI.Loader.shared
+  PIXI.Assets
     .add('neon-balls', 'shaders/neon-balls.frag')
     .add('smoke', 'shaders/smoke.frag')
     .add('vert', 'shaders/vertex.vert')
@@ -46,8 +54,8 @@ export function init() {
       geometry.interleave()
 
       const shader = PIXI.Shader.from(
-        PIXI.Loader.shared.resources['vert'].data, 
-        PIXI.Loader.shared.resources['neon-balls'].data, 
+        PIXI.Loader.shared.resources['vert'].data,
+        PIXI.Loader.shared.resources['neon-balls'].data,
         STATE.uniforms)
 
       const mesh = new PIXI.Mesh(geometry, shader)
